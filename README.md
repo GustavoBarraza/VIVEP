@@ -8,6 +8,9 @@ Vive+ es una SPA (Single Page Application) pensada para personas que viven con V
 - Chat comunitario anónimo con moderación básica
 - Personalización de alias, avatar y colores (modo claro/oscuro)
 - Diseño positivo, colorido y accesible
+- Paleta de colores profesional: claro (fondo #F5F5F5, texto #333, acento #4A90E2), oscuro (fondo #121212, texto #fff, tarjetas #1E1E1E)
+- Íconos en public/icons/ y referenciados correctamente en manifest.json
+- Mejoras de accesibilidad y estructura de carpetas
 
 ## Instalación y uso
 1. Clona el repositorio

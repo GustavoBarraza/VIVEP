@@ -86,52 +86,27 @@ export function SymptomTracker() {
   const alerta = alertaSintomaPersistente();
 
   return `
-    <section class="symptom-tracker">
+    <section class="symptom-tracker" role="main" aria-label="Seguimiento de Síntomas">
       <h2>Seguimiento de Síntomas</h2>
-      <form id="sintomaForm" autocomplete="off" class="card">
-        <label>Síntoma:</label>
-        <select name="sintoma" required>
-          <option value="">Selecciona...</option>
-          ${SINTOMAS.map(s => `<option value="${s}">${s}</option>`).join('')}
+      <form id="sintomaForm" aria-label="Formulario de nuevo síntoma">
+        <label for="fecha">Fecha:</label>
+        <input type="date" id="fecha" name="fecha" required />
+        <label for="tipo">Tipo de síntoma:</label>
+        <input type="text" id="tipo" name="tipo" required />
+        <label for="intensidad">Intensidad:</label>
+        <select id="intensidad" name="intensidad" required aria-label="Intensidad del síntoma">
+          <option value="">-- Selecciona --</option>
+          <option value="leve">Leve</option>
+          <option value="moderado">Moderado</option>
+          <option value="severo">Severo</option>
         </select>
-        <label>Intensidad:</label>
-        <select name="intensidad" required>
-          <option value="">Selecciona...</option>
-          ${INTENSIDADES.map(i => `<option value="${i}">${i}</option>`).join('')}
-        </select>
-        <label>Notas (opcional):</label>
-        <textarea name="notas" rows="2" style="border-radius:1em;padding:0.5em;"></textarea>
-        <button type="submit">Registrar</button>
+        <button type="submit">Agregar síntoma</button>
       </form>
-      <div class="card" style="margin-top:1.2em;">
-        <h3>Historial semanal</h3>
-        <div class="historial-grafico">
-          ${semana.map(d => `
-            <div class="dia-historial">
-              <span class="fecha-historial">${d.fecha.slice(5)}</span>
-              <div class="barras-sintomas">
-                ${d.sintomas.map(s => `<span class="barra barra-${s.intensidad.toLowerCase()}">${s.sintoma[0]}</span>`).join('')}
-              </div>
-            </div>
-          `).join('')}
-        </div>
-        <button id="exportarPDF" style="margin-top:1em;">Exportar reporte (.csv)</button>
+      <div class="historial-sintomas" aria-label="Historial de síntomas">
+        <!-- Aquí se renderiza el historial -->
       </div>
-      <div class="card" style="margin-top:1.2em;">
-        <h3>Historial mensual</h3>
-        <div class="historial-grafico">
-          ${mes.map(d => `
-            <div class="dia-historial-mes">
-              <span class="fecha-historial">${d.fecha.slice(5)}</span>
-              <div class="barras-sintomas">
-                ${d.sintomas.map(s => `<span class="barra barra-${s.intensidad.toLowerCase()}">${s.sintoma[0]}</span>`).join('')}
-              </div>
-            </div>
-          `).join('')}
-        </div>
-      </div>
-      ${alerta.length > 0 ? `<div class="alerta-sintoma">⚠️ Si este síntoma persiste más de 3 días, consulta a tu médico: <b>${alerta.join(', ')}</b></div>` : ''}
-      <button onclick="window.location.hash='dashboard'" style="margin-top:1.5em;">Volver</button>
+      <button id="exportarPDF" aria-label="Exportar historial a PDF">Exportar a PDF</button>
+      <button onclick="window.location.hash='dashboard'" style="margin-top:1em;">Volver</button>
     </section>
   `;
 } 

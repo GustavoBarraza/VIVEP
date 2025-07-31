@@ -1,7 +1,9 @@
 import { ThemeToggle } from './ThemeToggle.js';
+import { getCurrentUser, logout } from '../guardian.js';
 
 function getAlias() {
-  return localStorage.getItem('alias') || 'Amigx';
+  const user = getCurrentUser();
+  return user ? user.alias : 'Amigx';
 }
 function getAvatar() {
   return localStorage.getItem('avatar') || "🦸‍♂️";
@@ -59,6 +61,15 @@ export function Dashboard() {
         }
       };
     }
+    
+    // Configurar botón de logout
+    const btnLogout = document.querySelector('.btn-logout');
+    if (btnLogout) {
+      btnLogout.onclick = () => {
+        logout();
+      };
+    }
+    
     // Mostrar mensaje motivacional desde JSON
     const motivacionalP = document.querySelector('.card.motivacional p');
     if (motivacionalP) {
@@ -71,40 +82,49 @@ export function Dashboard() {
   // Mensaje motivacional se rellena por JS tras render
   return `
     ${ThemeToggle()}
-    <section class="dashboard">
-      <div style="display:flex;align-items:center;justify-content:center;gap:0.5em;">
-        <span style="font-size:2em;">${avatar}</span>
-        <h2>Hola <span class="alias">${alias}</span> 👋</h2>
-      </div>
-      <p class="mensaje-apoyo">Recuerda que no estás solo, tu comunidad está contigo.</p>
-      <div class="card recordatorio">
-        <h3>💊 Próxima medicación</h3>
-        <p>Hora: <strong>${proximaToma}</strong></p>
-        <button class="btn-tomar">¡Ya la tomé!</button>
-      </div>
-      <div class="card motivacional">
-        <h3>✨ Mensaje del día</h3>
-        <p>Cargando mensaje...</p>
-      </div>
-      <div class="card adherencia">
-        <h3>📈 Adherencia semanal</h3>
-        <div class="dias-adherencia">
-          ${dias.map(d => `
-            <div class="dia${d.tomada ? ' tomada' : ''}">
-              <span>${d.nombre[0].toUpperCase()}</span>
-              <div class="circulo"></div>
-            </div>
-          `).join('')}
+    <section class="dashboard" role="main" aria-label="Panel principal">
+      <div class="dashboard-header">
+        <div class="user-welcome">
+          <span class="user-avatar" aria-hidden="true">${avatar}</span>
+          <h2>Hola <span class="alias">${alias}</span> 👋</h2>
         </div>
-        <p>${adherencia}% de tomas registradas</p>
+        <p class="mensaje-apoyo">Recuerda que no estás solo, tu comunidad está contigo.</p>
+        <button onclick="logout()" class="btn-logout">Cerrar sesión</button>
       </div>
-      <div class="acciones">
-        <button class="btn-chat" onclick="window.location.hash='chat'">Ir al chat comunitario</button>
-        <button class="btn-personalizar" onclick="window.location.hash='personalize'">Personalizar</button>
-        <button class="btn-medic-safety" onclick="window.location.hash='medic-safety'">Seguridad de Medicamentos</button>
-        <button class="btn-symptoms" onclick="window.location.hash='symptoms'">Seguimiento de Síntomas</button>
-        <button class="btn-appointments" onclick="window.location.hash='appointments'">Agenda de Citas</button>
-        <button class="btn-privacy" onclick="window.location.hash='privacy'">Modo Privacidad</button>
+      
+      <div class="dashboard-content">
+        <div class="card recordatorio" role="region" aria-label="Próxima medicación">
+          <h3>💊 Próxima medicación</h3>
+          <p>Hora: <strong>${proximaToma}</strong></p>
+          <button class="btn-tomar" aria-label="Confirmar toma de medicación">¡Ya la tomé!</button>
+        </div>
+        
+        <div class="card motivacional" role="region" aria-label="Mensaje motivacional">
+          <h3>✨ Mensaje del día</h3>
+          <p>Cargando mensaje...</p>
+        </div>
+        
+        <div class="card adherencia" role="region" aria-label="Adherencia semanal">
+          <h3>📈 Adherencia semanal</h3>
+          <div class="dias-adherencia">
+            ${dias.map(d => `
+              <div class="dia${d.tomada ? ' tomada' : ''}" tabindex="0" aria-label="${d.nombre}: ${d.tomada ? 'tomada' : 'no tomada'}">
+                <span>${d.nombre[0].toUpperCase()}</span>
+                <div class="circulo"></div>
+              </div>
+            `).join('')}
+          </div>
+          <p>${adherencia}% de tomas registradas</p>
+        </div>
+      </div>
+      
+      <div class="acciones" role="navigation" aria-label="Acciones rápidas">
+        <button class="btn-chat" onclick="window.location.hash='chat'" aria-label="Ir al chat comunitario">Ir al chat comunitario</button>
+        <button class="btn-personalizar" onclick="window.location.hash='personalize'" aria-label="Personalizar">Personalizar</button>
+        <button class="btn-medic-safety" onclick="window.location.hash='medic-safety'" aria-label="Seguridad de Medicamentos">Seguridad de Medicamentos</button>
+        <button class="btn-symptoms" onclick="window.location.hash='symptoms'" aria-label="Seguimiento de Síntomas">Seguimiento de Síntomas</button>
+        <button class="btn-appointments" onclick="window.location.hash='appointments'" aria-label="Agenda de Citas">Agenda de Citas</button>
+        <button class="btn-privacy" onclick="window.location.hash='privacy'" aria-label="Modo Privacidad">Modo Privacidad</button>
       </div>
     </section>
   `;

@@ -52,14 +52,19 @@ export function PrivacyMode() {
 
   // Configuración de PIN
   return `
-    <section class="privacy-mode" style="animation:fadeIn 0.5s;">
-      <h2>Modo Privacidad Rápida</h2>
-      <form id="pinPrivacidadForm" class="card">
-        <label>Configura tu PIN de privacidad:</label>
-        <input type="password" name="pin" required style="border-radius:1em;padding:0.7em;" />
+    <section class="privacy-mode" role="main" aria-label="Modo Privacidad">
+      <h2>Modo Privacidad</h2>
+      <form id="pinPrivacidadForm" aria-label="Configurar PIN de privacidad">
+        <label for="pin">PIN:</label>
+        <input type="password" id="pin" name="pin" required />
         <button type="submit">Guardar PIN</button>
       </form>
-      <button onclick="window.location.hash='dashboard'" style="margin-top:1.5em;">Volver</button>
+      <form id="pinUnlockForm" aria-label="Desbloquear privacidad">
+        <label for="pinUnlock">PIN:</label>
+        <input type="password" id="pinUnlock" name="pinUnlock" required />
+        <button type="submit">Desbloquear</button>
+      </form>
+      <button onclick="window.location.hash='dashboard'" style="margin-top:1em;">Volver</button>
     </section>
   `;
 }

@@ -31,26 +31,43 @@ export function EmergencyMode() {
 
   const contacto = getContactoEmergencia();
   return `
-    <section class="emergency-mode">
-      <h2>Modo Emergencia</h2>
-      <div class="card">
-        <h3>Opciones rápidas</h3>
-        <button onclick="window.open('tel:8002322342')" style="margin-bottom:1em;">Llamar a Línea VIH Nacional</button>
-        <button id="enviarMensajeEmergencia">Enviar mensaje a contacto de confianza</button>
+    <section class="emergency-mode" role="main" aria-label="Modo Emergencia">
+      <h2>🚨 Modo Emergencia</h2>
+      
+      <div class="emergency-content">
+        <div class="card emergency-quick-actions">
+          <h3>⚡ Opciones rápidas</h3>
+          <div class="emergency-buttons">
+            <button onclick="window.open('tel:8002322342')" class="btn-emergency-call">
+              📞 Llamar a Línea VIH Nacional
+            </button>
+            <button id="enviarMensajeEmergencia" class="btn-emergency-message" aria-label="Enviar mensaje de emergencia">
+              💬 Enviar mensaje a contacto de confianza
+            </button>
+          </div>
+        </div>
+        
+        <div class="card emergency-config">
+          <h3>⚙️ Configura tu contacto de confianza</h3>
+          <form id="emergenciaConfigForm" autocomplete="off" aria-label="Configuración de emergencia">
+            <div class="form-group">
+              <label>Nombre:</label>
+              <input type="text" name="nombre" value="${contacto.nombre}" required />
+            </div>
+            <div class="form-group">
+              <label>Teléfono:</label>
+              <input type="tel" name="telefono" value="${contacto.telefono}" required />
+            </div>
+            <div class="form-group">
+              <label>Mensaje:</label>
+              <textarea name="mensaje" rows="3" required>${contacto.mensaje}</textarea>
+            </div>
+            <button type="submit" class="btn-save-contact">💾 Guardar contacto</button>
+          </form>
+        </div>
       </div>
-      <div class="card" style="margin-top:1.2em;">
-        <h3>Configura tu contacto de confianza</h3>
-        <form id="emergenciaConfigForm" autocomplete="off">
-          <label>Nombre:</label>
-          <input type="text" name="nombre" value="${contacto.nombre}" required />
-          <label>Teléfono:</label>
-          <input type="tel" name="telefono" value="${contacto.telefono}" required />
-          <label>Mensaje:</label>
-          <textarea name="mensaje" rows="2" required>${contacto.mensaje}</textarea>
-          <button type="submit">Guardar contacto</button>
-        </form>
-      </div>
-      <button onclick="window.location.hash='dashboard'" style="margin-top:1.5em;">Volver</button>
+      
+      <button onclick="window.location.hash='dashboard'" class="btn-back">← Volver al Dashboard</button>
     </section>
   `;
 }

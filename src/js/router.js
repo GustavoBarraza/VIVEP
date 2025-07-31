@@ -9,10 +9,30 @@ import { EmergencyMode } from './components/EmergencyMode.js';
 import { Appointments } from './components/Appointments.js';
 import { PrivacyMode } from './components/PrivacyMode.js';
 import { DailyTips } from './components/DailyTips.js';
+import { Login } from './components/Login.js';
+import { requireAuth, isPublicRoute, isPublicAuthRoute, isAuthenticated, logout } from './guardian.js';
 
 export function router() {
   const app = document.getElementById('app');
-  const route = window.location.hash.replace('#', '') || 'welcome';
+  const route = window.location.hash.replace('#', '') || '';
+  const authenticated = isAuthenticated();
+
+  // Verificar autenticación para rutas protegidas
+  if (!isPublicRoute(route) && !requireAuth()) {
+    return; // El guardián ya redirigió a login
+  }
+
+  // Si está autenticado y va a rutas públicas de auth, redirigir a dashboard
+  if (authenticated && isPublicAuthRoute(route)) {
+    app.innerHTML = DailyTips() + Dashboard();
+    return;
+  }
+
+  // Si está autenticado y va a welcome, redirigir a dashboard
+  if (authenticated && route === 'welcome') {
+    app.innerHTML = DailyTips() + Dashboard();
+    return;
+  }
 
   switch (route) {
     case 'welcome':
@@ -21,31 +41,57 @@ export function router() {
     case 'register':
       app.innerHTML = Register();
       break;
+    case 'login':
+      app.innerHTML = Login();
+      break;
     case 'dashboard':
-      app.innerHTML = DailyTips() + Dashboard();
+      if (requireAuth()) {
+        app.innerHTML = DailyTips() + Dashboard();
+      }
       break;
     case 'personalize':
-      app.innerHTML = Personalize();
+      if (requireAuth()) {
+        app.innerHTML = Personalize();
+      }
       break;
     case 'chat':
-      app.innerHTML = Chat();
+      if (requireAuth()) {
+        app.innerHTML = Chat();
+      }
       break;
     case 'medic-safety':
-      app.innerHTML = MedicSafety();
+      if (requireAuth()) {
+        app.innerHTML = MedicSafety();
+      }
       break;
     case 'symptoms':
-      app.innerHTML = SymptomTracker();
+      if (requireAuth()) {
+        app.innerHTML = SymptomTracker();
+      }
       break;
     case 'emergency':
-      app.innerHTML = EmergencyMode();
+      if (requireAuth()) {
+        app.innerHTML = EmergencyMode();
+      }
       break;
     case 'appointments':
-      app.innerHTML = Appointments();
+      if (requireAuth()) {
+        app.innerHTML = Appointments();
+      }
       break;
     case 'privacy':
-      app.innerHTML = PrivacyMode();
+      if (requireAuth()) {
+        app.innerHTML = PrivacyMode();
+      }
+      break;
+    case 'logout':
+      logout();
       break;
     default:
-      app.innerHTML = Welcome();
+      if (authenticated) {
+        app.innerHTML = DailyTips() + Dashboard();
+      } else {
+        app.innerHTML = Login();
+      }
   }
 } 

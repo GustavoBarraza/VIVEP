@@ -24,19 +24,19 @@ export function Personalize() {
   const avatar = localStorage.getItem('avatar') || AVATARS[0];
 
   return `
-    <section class="personalize">
+    <section class="personalize" role="main" aria-label="Personalización de perfil">
       <h2>Personaliza tu perfil</h2>
-      <form id="personalizeForm" autocomplete="off">
-        <label>Alias:</label>
-        <input type="text" name="alias" value="${alias}" required />
-        <label>Hora de próxima toma:</label>
-        <input type="time" name="proximaToma" value="${proximaToma}" required />
+      <form id="personalizeForm" autocomplete="off" aria-label="Formulario de personalización">
+        <label for="alias">Alias:</label>
+        <input type="text" id="alias" name="alias" value="${alias}" required />
+        <label for="proximaToma">Hora de próxima toma:</label>
+        <input type="time" id="proximaToma" name="proximaToma" value="${proximaToma}" required />
         <label>Avatar:</label>
-        <div class="avatar-list">
-          ${AVATARS.map(a => `
+        <div class="avatar-list" role="radiogroup" aria-label="Selecciona un avatar">
+          ${AVATARS.map((a, i) => `
             <label class="avatar-option">
-              <input type="radio" name="avatar" value="${a}" ${a === avatar ? 'checked' : ''} />
-              <span class="avatar-emoji">${a}</span>
+              <input type="radio" name="avatar" value="${a}" id="avatar${i}" ${a === avatar ? 'checked' : ''} aria-checked="${a === avatar}" aria-label="Avatar ${i+1}" />
+              <span class="avatar-emoji" aria-hidden="true">${a}</span>
             </label>
           `).join('')}
         </div>

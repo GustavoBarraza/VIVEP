@@ -143,26 +143,26 @@ export function MedicSafety() {
   const resumen = resumenConservacion(misMeds);
 
   return `
-    <section class="medic-safety">
+    <section class="medic-safety" role="main" aria-label="Seguridad de Medicamentos">
       <h2>Seguridad de Medicamentos</h2>
-      <form id="medicamentoFormMulti" autocomplete="off" style="margin-bottom:1em;">
+      <form id="medicamentoFormMulti" autocomplete="off" style="margin-bottom:1em;" aria-label="Agregar medicamentos">
         <label>Agrega tus medicamentos:</label>
         <div style="display:flex;gap:0.5em;align-items:center;">
-          <select style="flex:1;padding:0.7em;border-radius:1em;border:1.5px solid var(--color-primary);font-size:1em;">
+          <select style="flex:1;padding:0.7em;border-radius:1em;border:1.5px solid var(--color-primary);font-size:1em;" aria-label="Selecciona medicamento">
             <option value="">-- Selecciona --</option>
             ${MEDICAMENTOS_BASE.map(m => `<option value="${m.nombre}">${m.nombre}</option>`).join('')}
           </select>
-          <input type="text" placeholder="O escribe el nombre..." style="flex:1;padding:0.7em;border-radius:1em;border:1.5px solid var(--color-primary);font-size:1em;" />
+          <input type="text" placeholder="O escribe el nombre..." style="flex:1;padding:0.7em;border-radius:1em;border:1.5px solid var(--color-primary);font-size:1em;" aria-label="Nombre de medicamento" />
           <button type="submit">Agregar</button>
         </div>
       </form>
-      <div class="lista-mis-meds">
+      <div class="lista-mis-meds" aria-label="Lista de medicamentos">
         ${misMeds.length === 0 ? '<p style="text-align:center;">No has registrado medicamentos.</p>' : misMeds.map(med => {
           const base = getMedicamento(med.nombre);
-          return `<div class='card card-med' style='margin-bottom:1em;position:relative;'>
+          return `<div class='card card-med' style='margin-bottom:1em;position:relative;' role='region' aria-label='Medicamento ${med.nombre}'>
             <div style='position:absolute;top:0.7em;right:0.7em;display:flex;gap:0.3em;'>
-              <button class='btn-edit-med' data-nombre="${med.nombre}" title="Editar">✏️</button>
-              <button class='btn-del-med' data-nombre="${med.nombre}" title="Eliminar">🗑️</button>
+              <button class='btn-edit-med' data-nombre="${med.nombre}" title="Editar" aria-label="Editar ${med.nombre}">✏️</button>
+              <button class='btn-del-med' data-nombre="${med.nombre}" title="Eliminar" aria-label="Eliminar ${med.nombre}">🗑️</button>
             </div>
             <h3 style="margin-bottom:0.5em;">${med.nombre}</h3>
             <div><span style="font-size:1.2em;">⚠️</span> <b>Advertencias:</b></div>
@@ -173,11 +173,11 @@ export function MedicSafety() {
           </div>`;
         }).join('')}
       </div>
-      <div class="card" style="margin-top:1.2em;">
+      <div class="card" style="margin-top:1.2em;" role="region" aria-label="Advertencias cruzadas">
         <h3>Advertencias cruzadas</h3>
         ${advertencias.length === 0 ? '<p>Sin advertencias cruzadas detectadas.</p>' : `<ul style="text-align:left;">${advertencias.map(a => `<li>${a}</li>`).join('')}</ul>`}
       </div>
-      <div class="card" style="margin-top:1.2em;">
+      <div class="card" style="margin-top:1.2em;" role="region" aria-label="Resumen de conservación">
         <h3>Resumen de conservación</h3>
         <ul style="text-align:left;">
           <li>${resumen.refrigeracion} medicamento(s) requieren <b>refrigeración</b></li>

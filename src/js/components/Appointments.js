@@ -79,39 +79,41 @@ export function Appointments() {
   const pasadas = citas.filter(c => new Date(c.fecha + 'T' + c.hora) < ahora);
 
   return `
-    <section class="appointments">
+    <section class="appointments" role="main" aria-label="Agenda de Citas">
       <h2>Agenda de Citas</h2>
-      <form id="citaForm" class="card" style="margin-bottom:1em;">
-        <label>Fecha:</label>
-        <input type="date" name="fecha" required />
-        <label>Hora:</label>
-        <input type="time" name="hora" required />
-        <label>Tipo:</label>
-        <select name="tipo" required>
-          <option value="">Selecciona...</option>
-          ${TIPOS_CITA.map(t => `<option value="${t}">${t}</option>`).join('')}
+      <form id="citaForm" autocomplete="off" aria-label="Formulario de nueva cita">
+        <label for="fecha">Fecha:</label>
+        <input type="date" id="fecha" name="fecha" required />
+        <label for="hora">Hora:</label>
+        <input type="time" id="hora" name="hora" required />
+        <label for="tipo">Tipo:</label>
+        <select id="tipo" name="tipo" required aria-label="Tipo de cita">
+          <option value="">-- Selecciona --</option>
+          <option value="consulta">Consulta</option>
+          <option value="laboratorio">Laboratorio</option>
+          <option value="vacuna">Vacuna</option>
+          <option value="otro">Otro</option>
         </select>
         <button type="submit">Agregar cita</button>
       </form>
-      <div class="card">
-        <h3>Próximas citas</h3>
-        ${futuras.length === 0 ? '<p>No hay citas próximas.</p>' : futuras.map((c, i) => `
-          <div class="cita-item">
-            <span>📅 ${c.fecha} ⏰ ${c.hora} (${c.tipo})</span>
-            <button class="btn-edit-cita" data-idx="${citas.indexOf(c)}" title="Editar">✏️</button>
-            <button class="btn-del-cita" data-idx="${citas.indexOf(c)}" title="Eliminar">🗑️</button>
+      <div class="lista-citas" aria-label="Lista de citas">
+        ${futuras.map((c, i) => `
+          <div class="cita-item" role="region" aria-label="Cita el ${c.fecha} a las ${c.hora} de tipo ${c.tipo}">
+            <span>${c.fecha} ${c.hora} - ${c.tipo}</span>
+            <button class="btn-edit-cita" data-idx="${i}" aria-label="Editar cita">✏️</button>
+            <button class="btn-del-cita" data-idx="${i}" aria-label="Eliminar cita">🗑️</button>
           </div>
         `).join('')}
       </div>
-      <div class="card" style="margin-top:1em;">
-        <h3>Citas pasadas</h3>
-        ${pasadas.length === 0 ? '<p>No hay citas pasadas.</p>' : pasadas.map((c, i) => `
-          <div class="cita-item">
-            <span>📅 ${c.fecha} ⏰ ${c.hora} (${c.tipo})</span>
+      <h3>Citas pasadas</h3>
+      <div class="lista-citas-pasadas" aria-label="Lista de citas pasadas">
+        ${pasadas.map((c, i) => `
+          <div class="cita-item" role="region" aria-label="Cita pasada el ${c.fecha} a las ${c.hora} de tipo ${c.tipo}">
+            <span>${c.fecha} ${c.hora} - ${c.tipo}</span>
           </div>
         `).join('')}
       </div>
-      <button onclick="window.location.hash='dashboard'" style="margin-top:1.5em;">Volver</button>
+      <button onclick="window.location.hash='dashboard'" style="margin-top:1em;">Volver</button>
     </section>
   `;
-} 
+}

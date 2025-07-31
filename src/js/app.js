@@ -1,6 +1,7 @@
 // import '../css/styles.css';
 import { router } from './router.js';
 import { EmergencyButton } from './components/EmergencyMode.js';
+import { RouteGuard } from './guardian.js';
 
 function setTheme(mode) {
   if (mode === 'dark') {
@@ -23,6 +24,10 @@ window.addEventListener('DOMContentLoaded', () => {
   const savedTheme = localStorage.getItem('theme') || 'light';
   setTheme(savedTheme);
   solicitarPermisoNotificaciones();
+  
+  // Inicializar guardián de rutas
+  new RouteGuard();
+  
   router();
   window.addEventListener('hashchange', () => {
     router();

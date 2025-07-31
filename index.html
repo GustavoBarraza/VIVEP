@@ -7,23 +7,23 @@
     <meta name="description" content="Vive+ - Tu app de apoyo, comunidad y salud para personas que viven con VIH.">
     <meta name="keywords" content="VIH, salud, comunidad, apoyo, medicación, bienestar, app">
     <meta name="theme-color" content="#a259c6" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <link rel="manifest" href="/manifest.json" />
+    <link rel="icon" type="image/svg+xml" href="./icon.svg" />
+    <link rel="manifest" href="./manifest.json" />
     <!-- Google Fonts: Poppins y Nunito -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css?family=Poppins:400,700|Nunito:400,700&display=swap" rel="stylesheet">
     <!-- Estilos principales -->
-    <link rel="stylesheet" href="/src/css/styles.css" />
+    <link rel="stylesheet" href="./src/css/styles.css" />
   </head>
   <body>
     <div id="app"></div>
-    <script type="module" src="/src/js/app.js"></script>
+    <script type="module" src="./src/js/app.js"></script>
     <!-- Service Worker para PWA -->
     <script>
       if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
-          navigator.serviceWorker.register('/service-worker.js');
+          navigator.serviceWorker.register('./service-worker.js');
         });
       }
     </script>
